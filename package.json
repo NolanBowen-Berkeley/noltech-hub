@@ -1,0 +1,20 @@
+{
+  "name": "noltech-hub-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Desktop operations app for a small electronics resale business — inventory, listings, bookkeeping, and lot analysis",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup": "npm --prefix noltech-hub install && npm --prefix noltech-pipeline install && npm --prefix noltech-sync-agent install",
+    "dev": "npm --prefix noltech-hub run electron:dev",
+    "dev:web": "npm --prefix noltech-hub run dev",
+    "pipeline": "npm --prefix noltech-pipeline start",
+    "pipeline:serve-only": "npm --prefix noltech-pipeline run serve-only",
+    "agent": "npm --prefix noltech-sync-agent start",
+    "build": "npm --prefix noltech-hub run build",
+    "health": "npm --prefix noltech-pipeline run health"
+  }
+}

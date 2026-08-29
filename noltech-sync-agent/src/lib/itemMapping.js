@@ -3,7 +3,7 @@
 // category names to internal category enums, and mapping eBay condition
 // IDs to internal condition enums.
 //
-// Ported verbatim from NolTech-Hub/src/utils/itemMapping.js — the desktop
+// Ported verbatim from noltech-hub/src/utils/itemMapping.js — the desktop
 // and the Pi sync agent must agree on these mappings or items get
 // double-classified across syncs.
 

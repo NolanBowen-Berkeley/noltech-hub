@@ -5,10 +5,10 @@
 //   - scoring (shipping cost lookup)
 //
 // Replaces FOUR previously-duplicated copies:
-//   - NolTech-Hub/src/services/manifestParser.js
+//   - noltech-hub/src/services/manifestParser.js
 //   - lots-discovery-worker/src/enrichment.js
 //   - scraper-worker/src/textUtils.js
-//   - NolTech-Hub/scraper/utils/categoryClassifier.js
+//   - noltech-hub/scraper/utils/categoryClassifier.js
 
 const PATTERNS = [
   { cat: 'gpu',         re: /\b(rtx|gtx|radeon|geforce|quadro|tesla|firepro|rx\s?\d{3,}|gpu\b|graphics\s+card)\b/i },

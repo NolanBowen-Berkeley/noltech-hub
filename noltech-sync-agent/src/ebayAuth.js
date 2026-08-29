@@ -1,5 +1,5 @@
 // ─── eBay OAuth2 token manager (server flavor) ───────────────────────────────
-// Headless variant of NolTech-Hub/src/services/ebayAuth.js. Reads credentials
+// Headless variant of noltech-hub/src/services/ebayAuth.js. Reads credentials
 // from process.env (loaded via config.js), keeps the minted access token in
 // an in-memory module-level cache, and refreshes ~5 min before expiry by
 // calling the pipeline's /api/ebay/oauth/refresh endpoint.

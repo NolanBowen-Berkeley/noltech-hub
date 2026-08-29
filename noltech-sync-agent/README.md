@@ -266,24 +266,24 @@ Use standard 5-field cron expressions for overrides
   upserts them into Supabase.
 - `src/sync/orders.js` — pulls recent orders via the Fulfillment API.
 - `src/sync/finances.js` — pulls payouts + fees via the Sell Finances API.
-- `src/lib/` — **pinned copies** of helpers from `NolTech-Hub` (item
+- `src/lib/` — **pinned copies** of helpers from `noltech-hub` (item
   mapping, fee math, `localDateStr`). These are intentionally not symlinked
   — they're snapshotted so a bug in the desktop app can't take down the
-  agent. If you change those helpers in NolTech-Hub, copy the updated
+  agent. If you change those helpers in noltech-hub, copy the updated
   version here and bump the agent's `package.json` version.
 
 ---
 
 ## Updating
 
-The desktop app (`NolTech-Hub`) is the canonical source for sync logic.
+The desktop app (`noltech-hub`) is the canonical source for sync logic.
 When you change behavior in any of:
 
-- `NolTech-Hub/src/hooks/useSyncAll.js`
-- `NolTech-Hub/src/hooks/useEventBridge.js`
-- `NolTech-Hub/src/services/syncEngine.js`
-- `NolTech-Hub/src/lib/itemMapping.js`
-- `NolTech-Hub/src/lib/fees.js`
+- `noltech-hub/src/hooks/useSyncAll.js`
+- `noltech-hub/src/hooks/useEventBridge.js`
+- `noltech-hub/src/services/syncEngine.js`
+- `noltech-hub/src/lib/itemMapping.js`
+- `noltech-hub/src/lib/fees.js`
 
 mirror the change in the corresponding file under `sync-agent/src/sync/` or
 `sync-agent/src/lib/`, bump the version in `package.json`, then on the Pi:
@@ -296,5 +296,5 @@ sudo systemctl restart sync-agent
 ```
 
 The Supabase migration `011_agent_heartbeats.sql` (in
-`NolTech-Hub/supabase/migrations/`) creates the `agent_heartbeats` table
+`noltech-hub/supabase/migrations/`) creates the `agent_heartbeats` table
 this agent writes to. Apply it before first run if you haven't already.

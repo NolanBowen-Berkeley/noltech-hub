@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege — nothing here needs write access to the repo.
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hub:
+    name: Hub — build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: noltech-hub/package-lock.json
+      - run: npm ci
+        working-directory: noltech-hub
+      - run: npm run build
+        working-directory: noltech-hub
+
+  pipeline:
+    name: Pipeline — boot and serve
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: noltech-pipeline/package-lock.json
+      - run: npm ci
+        working-directory: noltech-pipeline
+
+      # The point of the sample providers is that this needs no secrets. If
+      # this job ever starts needing them, something has regressed.
+      - name: Boot with zero configuration
+        working-directory: noltech-pipeline
+        run: |
+          node src/server.js --no-crons &
+          for i in $(seq 1 30); do
+            curl -sf localhost:3001/health >/dev/null && break
+            sleep 1
+          done
+          curl -sf localhost:3001/health         > /dev/null
+          curl -sf localhost:3001/diag/providers > /dev/null
+
+      - name: Lot routes answer
+        working-directory: noltech-pipeline
+        run: |
+          curl -sf "localhost:3001/api/lots/all"                  | grep -q '"ok":true'
+          curl -sf "localhost:3001/api/lots/manifest?lotId=90000137" | grep -q '"ok":true'
+          curl -sf "localhost:3001/api/lots/90000137/manifest"    | grep -q '"itemCount"'
+
+      # Generated data must be labelled. If this flag ever stops being set,
+      # the sync agent would start writing fixtures into a real database.
+      - name: Sample data is flagged
+        run: curl -sf "localhost:3001/api/lots/all" | grep -q '"sample":true'
+
+  sync-agent:
+    name: Sync agent — install and parse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: noltech-sync-agent/package-lock.json
+      - run: npm ci
+        working-directory: noltech-sync-agent
+      - name: Syntax-check every module
+        working-directory: noltech-sync-agent
+        run: find src -name '*.js' -print0 | xargs -0 -n1 node --check
+      - run: bash -n scripts/install.sh
+        working-directory: noltech-sync-agent
+
+  hygiene:
+    name: Repo hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cheap, high-value guard: the failure mode this repo most needs to
+      # avoid is a credential or a built bundle getting committed.
+      - name: No secrets, bundles, or business data tracked
+        run: |
+          fail=0
+
+          # Any .env EXCEPT the committed templates. Written as a list-then-
+          # filter rather than one regex because POSIX grep has no lookahead.
+          envs=$(git ls-files | grep -E '(^|/)\.env($|\.)' | grep -v '\.env\.example$' || true)
+          if [ -n "$envs" ]; then
+            echo "::error::an .env file is tracked:"; echo "$envs"; fail=1
+          fi
+
+          if git ls-files | grep -E '(^|/)(dist|release|node_modules|\.data)/' ; then
+            echo "::error::build output or dependencies are tracked"; fail=1
+          fi
+
+          if git ls-files | grep -E '\.csv$' ; then
+            echo "::error::a CSV is tracked — real business data?"; fail=1
+          fi
+
+          # Exclude this workflow: it necessarily contains the patterns it
+          # searches for, and would otherwise always match itself.
+          if git grep -InE 'eyJ[A-Za-z0-9_-]{30,}\.|sk-ant-api03-[A-Za-z0-9]|AIza[0-9A-Za-z_-]{30,}|brd-customer-|AKIA[0-9A-Z]{16}' \
+               -- . ':(exclude).github/workflows' ; then
+            echo "::error::something credential-shaped is committed"; fail=1
+          fi
+
+          exit $fail
+
+      - name: No scrapers reintroduced
+        run: |
+          if git grep -lE "puppeteer|playwright|cheerio" -- '*/package.json' ; then
+            echo "::error::a headless-browser or HTML-parsing dependency was added — see docs/DATA-SOURCES.md"
+            exit 1
+          fi

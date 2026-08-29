@@ -34,7 +34,7 @@ was present when it was built.
 | `SHARED_AUTH_SECRET` | Server-side only. | Required whenever the pipeline binds anything but loopback. |
 
 The anon key being public is only safe because RLS policies decide what it can
-reach. Those policies are in `NolTech-Hub/supabase/migrations/` — review them
+reach. Those policies are in `noltech-hub/supabase/migrations/` — review them
 before pointing this at a project holding real data. A missing policy on one
 table is enough to undo the rest.
 

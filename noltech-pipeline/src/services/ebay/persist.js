@@ -152,7 +152,7 @@ export async function upsertSyncState({ supabase, workspaceId, patch }) {
 // see "Cloud eBay sync: ran 3 min ago" without inspecting Supabase manually.
 //
 // KEEP IN SYNC with EBAY_SYNC_AGENT_ID in
-// NolTech-Hub/src/utils/constants.js. The Hub queries agent_heartbeats
+// noltech-hub/src/utils/constants.js. The Hub queries agent_heartbeats
 // keyed by this exact string — renaming here without updating the Hub
 // silently breaks the System Health "eBay Sync Worker" tile.
 export const EBAY_SYNC_AGENT_ID = 'ebay-sync-worker';

@@ -16,12 +16,12 @@ answer, and `curl localhost:3001/diag/providers` tells you what's wired up.
 
 ```bash
 # Hub — the desktop app
-cd NolTech-Hub && npm install && cp .env.example .env
+cd noltech-hub && npm install && cp .env.example .env
 npm run electron:dev
 ```
 
 The Hub needs a Supabase project for auth and storage. Point `.env` at yours
-and apply the migrations in `NolTech-Hub/supabase/migrations/` in order.
+and apply the migrations in `noltech-hub/supabase/migrations/` in order.
 
 ## Ground rules
 
@@ -56,7 +56,7 @@ Match the file you're editing. Broadly:
 ## Before opening a PR
 
 ```bash
-cd NolTech-Hub     && npm run build     # must succeed
+cd noltech-hub     && npm run build     # must succeed
 cd noltech-pipeline && npm start -- --no-crons   # must boot cleanly
 ```
 

@@ -1,5 +1,5 @@
 // ─── Fee calculation (Pi-server flavor) ──────────────────────────────────────
-// Server-side variant of NolTech-Hub/src/utils/fees.js. The desktop app reads
+// Server-side variant of noltech-hub/src/utils/fees.js. The desktop app reads
 // user-configurable rates from IndexedDB; the Pi has no IndexedDB and no
 // browser, so every "user-configurable" rate falls back to a process.env
 // value (parsed as a float) or a hardcoded sensible default.
@@ -136,7 +136,7 @@ export function getEffectiveResaleMultiplier(condition, category) {
   return getResaleRealizationRate() * getActiveAskBuffer(category) * haircut;
 }
 
-// ─── Fee math (matches NolTech-Hub semantics) ─────────────────────────────────
+// ─── Fee math (matches noltech-hub semantics) ─────────────────────────────────
 export const EBAY_FEE_RATE = 0.0935; // legacy constant; prefer getEbayFeeRate()
 
 export function ebayFee(price, shipping = 0) {

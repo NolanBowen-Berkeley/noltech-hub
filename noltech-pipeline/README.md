@@ -44,8 +44,8 @@ npm run health             # pretty-print /health
 ```
 
 The Hub talks to `PIPELINE_BASE` (`http://localhost:3001`, in
-`NolTech-Hub/src/utils/constants.js`) and starts this service automatically —
-see `NolTech-Hub/electron/pipeline.cjs`. If something is already listening on
+`noltech-hub/src/utils/constants.js`) and starts this service automatically —
+see `noltech-hub/electron/pipeline.cjs`. If something is already listening on
 the port, the Hub attaches to it instead of spawning a second copy.
 
 ---
@@ -195,7 +195,7 @@ keep discovery and alerts running around the clock, run it as a service — the
 Hub detects the already-listening port and attaches instead of spawning a
 second copy.
 
-**Linux (systemd)** — model it on `sync-agent/scripts/sync-agent.service`,
+**Linux (systemd)** — model it on `noltech-sync-agent/scripts/sync-agent.service`,
 swapping `WorkingDirectory` and `ExecStart=/usr/bin/node src/server.js`.
 
 **Windows (Task Scheduler)** — trigger "At log on", action `node.exe`,
@@ -203,7 +203,7 @@ arguments `src\server.js`, "Start in" the pipeline directory.
 
 Running it on a different machine than the Hub means setting
 `PIPELINE_BIND_HOST=0.0.0.0` **and** `SHARED_AUTH_SECRET`, then pointing the
-Hub at it under Settings → Local Pipeline. `sync-agent` reads the same secret
+Hub at it under Settings → Local Pipeline. `noltech-sync-agent` reads the same secret
 from `PIPELINE_AUTH_SECRET`.
 
 ---

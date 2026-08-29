@@ -8,19 +8,25 @@ Three pieces:
 
 | | What it is | Runs as |
 | --- | --- | --- |
-| **`NolTech-Hub/`** | The desktop app — React + Electron | On your machine |
+| **`noltech-hub/`** | The desktop app — React + Electron | On your machine |
 | **`noltech-pipeline/`** | Local HTTP service: lot data, manifest parsing, pricing, background jobs | `localhost:3001`, started by the Hub |
 | **`sync-agent/`** | Headless eBay ⇄ Supabase sync, meant for an always-on box | A Pi, a VM, a spare laptop |
 
 State lives in Supabase (Postgres + auth + realtime), so the Hub on a laptop
 and an agent on a Pi see the same data.
 
+Each package installs independently — deliberately not npm workspaces, because
+hoisting `electron` and `sharp` to a shared root breaks `electron-packager`.
+The root `package.json` just forwards to them; `npm run setup` installs all
+three.
+
 ---
 
 ## Quick start
 
 ```bash
-cd noltech-pipeline && npm install && npm start
+npm run setup      # installs all three packages
+npm run pipeline   # starts the local service on :3001
 ```
 
 That's the whole first step. The pipeline boots with **no configuration** —
@@ -36,13 +42,13 @@ curl "localhost:3001/api/lots/all" | head -c 400
 Then the Hub:
 
 ```bash
-cd NolTech-Hub && npm install && cp .env.example .env
-# fill in your Supabase URL + anon key, then:
-npm run electron:dev
+cp noltech-hub/.env.example noltech-hub/.env
+# fill in your Supabase URL + anon key, then, from the repo root:
+npm run dev
 ```
 
 The Hub needs a Supabase project for auth and storage. Apply the migrations in
-`NolTech-Hub/supabase/migrations/` in numeric order.
+`noltech-hub/supabase/migrations/` in numeric order.
 
 ---
 
@@ -125,7 +131,7 @@ second code path for background work.
 Read [SECURITY.md](SECURITY.md) before pointing this at anything real. The
 short version: the Supabase anon key is public by design and safe only because
 row-level security is enforced — review the policies in
-`NolTech-Hub/supabase/migrations/` yourself. The service-role key bypasses RLS
+`noltech-hub/supabase/migrations/` yourself. The service-role key bypasses RLS
 entirely and belongs only in `noltech-pipeline/.env` and `sync-agent/.env`,
 never in the Hub. Never commit `dist/` — Vite inlines `VITE_*` variables into
 the bundle at build time.

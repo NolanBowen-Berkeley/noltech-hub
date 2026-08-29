@@ -36,7 +36,7 @@ const log = (...args) => console.log('[pipeline]', ...args);
 function candidateDirs(appPath) {
   const dirs = [];
   if (process.env.PIPELINE_DIR) dirs.push(process.env.PIPELINE_DIR);
-  // Dev + repo layout: personal application/{NolTech-Hub,noltech-pipeline}
+  // Dev + repo layout: repo root/{noltech-hub,noltech-pipeline}
   dirs.push(path.join(appPath, '..', 'noltech-pipeline'));
   dirs.push(path.join(appPath, '..', '..', 'noltech-pipeline'));
   // Packaged: bundled under resources/

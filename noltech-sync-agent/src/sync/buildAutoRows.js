@@ -1,5 +1,5 @@
 // ─── Bookkeeping row builder ─────────────────────────────────────────────────
-// Server-side port of useEventBridge.buildAutoRowsForSale (NolTech-Hub).
+// Server-side port of useEventBridge.buildAutoRowsForSale (noltech-hub).
 // Given a sale + the inventory item context, returns the canonical 3-or-4 row
 // family (income + platform fees + ad fees + shipping label) that mirrors what
 // the desktop bookkeeping ledger writes when sale:recorded fires.

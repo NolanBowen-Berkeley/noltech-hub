@@ -19,7 +19,7 @@ import { randomUUID } from 'node:crypto';
 import { parseBrand, mapCategory, mapCondition } from '../lib/itemMapping.js';
 
 // Stable PK for the bucket lot that auto-synced eBay items live under.
-// Matches NolTech-Hub/src/utils/constants.js EBAY_SYNC_LOT_ID exactly.
+// Matches noltech-hub/src/utils/constants.js EBAY_SYNC_LOT_ID exactly.
 export const EBAY_SYNC_LOT_ID = 'noltech-ebay-sync-lot';
 
 const LISTINGS_TIMEOUT_MS = 45000;

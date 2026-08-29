@@ -24,7 +24,7 @@ Lot and pricing data comes from pluggable providers in `../noltech-pipeline/src/
 ## Architecture
 
 ```
-NolTech-Hub/
+noltech-hub/
   electron/
     main.cjs                  -- Electron main process, starts pipeline, creates window
     pipeline.cjs              -- spawns/supervises the local pipeline service
