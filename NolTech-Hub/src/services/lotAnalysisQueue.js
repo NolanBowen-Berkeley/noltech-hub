@@ -1,6 +1,6 @@
 // ─── Lot Analysis Queue (Tier 39 auto-analyze) ────────────────────────────────
 // Bridges the Liquidation.com scraper + manifest enricher to the local
-// pipeline's analysis cron, which scores lots. Each Newegg_Business lot, on
+// pipeline's analysis cron, which scores lots. Each queued lot, on
 // detection, gets a queue row the analysis cron pulls and processes.
 //
 // Pre-filters at enqueue time to avoid wasting Bright Data budget on lots
@@ -168,7 +168,7 @@ export async function enqueueLot(lot) {
         lot_id: lot.lotId,
         title: lot.title,
         url: lot.url,
-        seller: lot.seller || 'Newegg_Business',
+        seller: lot.seller || null,
         current_bid: lot.price || 0,
         num_bids: lot.numBids || 0,
         quantity: lot.quantity || null,

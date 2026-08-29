@@ -2,7 +2,7 @@
 // Bridges the auto-analyze-worker's output (lot_analyses + liquidation_manifests
 // in Supabase) into the in-memory enrichments state BrowseLotsView already
 // consumes. The cron has been paying for sold-comps pricing on every
-// Newegg_Business lot — this lets the Hub READ that work instead of asking
+// lot it scores — this lets the Hub READ that work instead of asking
 // the user to re-pay via the Price Manifests button.
 //
 // Why this exists: before this loader, the cron's analysis was visible only

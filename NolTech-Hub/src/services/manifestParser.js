@@ -1,7 +1,7 @@
 // ─── Manifest classification layer (Tier 39) ──────────────────────────────────
-// The liquidation.com scraper (`scraper/scrapers/liquidation.js::fetchLiqManifest`)
-// already does the heavy lifting: fetches CSV / XLSX / HTML aucimg pages and
-// returns items shaped as { title, brand, upc, qty, msrp, category }.
+// The pipeline does the heavy lifting: its lot provider returns a manifest
+// table, and `shared/manifestTable.js` maps it to items shaped as
+// { title, brand, upc, qty, msrp, category }.
 //
 // This module adds the Tier 39 enrichment layer on top:
 //   - `condition`: 'working' | 'for_parts' | 'unknown'

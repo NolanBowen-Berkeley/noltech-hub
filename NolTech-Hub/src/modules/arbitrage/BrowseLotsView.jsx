@@ -1,5 +1,5 @@
 // ─── Browse Lots View ─────────────────────────────────────────────────────────
-// Extracted from ArbitrageScanner.jsx. Shows scraped lots with enrichment,
+// Extracted from ArbitrageScanner.jsx. Shows fetched lots with enrichment,
 // filtering, and pricing. Must stay always-mounted (CSS hidden) so manifest
 // pricing continues in the background when switching tabs.
 
@@ -19,6 +19,7 @@ import { loadEnrichmentsFromAnalyses } from '../../services/analysisEnrichmentLo
 import { decrypt } from '../../services/crypto';
 import { KEY_LAMBDA_URL, KEY_AUTH_SECRET } from '../../services/soldComps';
 import { fmt, formatDateTime as formatDate, parseQuantity } from '../../utils/formatters';
+import { passesAutoAnalyzeFilter } from '../../utils/constants';
 import LotCard from './LotCard';
 import LotCardCompact from './LotCardCompact';
 import BrowseLotsStatusStrip from './BrowseLotsStatusStrip';
@@ -507,7 +508,7 @@ function BrowseLotsView({ onAnalyzeLot }) {
   }, [showComparables, lots]);
 
   // Auto-populate enrichments from prior auto-analyze cron runs. The cron
-  // pays for sold-comps pricing every 5 min on every Newegg_Business lot —
+  // pays for pricing lookups on every lot it scores —
   // pulling that work into the in-memory enrichments state lets each LotCard
   // render its full pricing grid without the user clicking Price Manifests.
   // Only fills lots NOT already enriched (manual Price Manifests wins) so a
@@ -641,13 +642,13 @@ function BrowseLotsView({ onAnalyzeLot }) {
       // build comparable-closes data over time. Best-effort; never blocks
       // the UI if storage fails.
       captureScrapedLots(freshLots).catch((e) => console.error('[BrowseLotsView] lot history capture failed:', e));
-      // ── Tier 39: auto-enqueue Newegg_Business lots for the auto-analyze
-      // Worker. enqueueLots respects the 24h cooldown + pre-filters internally,
-      // so we can safely fire it after every scrape. Fire-and-forget — never
-      // block the UI.
-      const liqLots = freshLots.filter((l) => l.source === 'liquidation.com' && l.seller === 'Newegg_Business');
-      if (liqLots.length > 0) {
-        enqueueLots(liqLots)
+      // ── Auto-enqueue lots for the background scoring cron. enqueueLots
+      // respects the 24h cooldown + pre-filters internally, so it's safe to
+      // fire after every fetch. Fire-and-forget — never block the UI.
+      // The filter is configurable in utils/constants.js; empty means all.
+      const analyzable = freshLots.filter((l) => passesAutoAnalyzeFilter(l));
+      if (analyzable.length > 0) {
+        enqueueLots(analyzable)
           .then((r) => {
             // Always log the outcome so we can see why lots get skipped
             // (cooldown / no_manifest_items / bid_too_close_to_msrp / errors).
@@ -657,11 +658,11 @@ function BrowseLotsView({ onAnalyzeLot }) {
               const key = `${d.status}${d.reason ? ':' + d.reason.split(' (')[0] : ''}`;
               reasonCounts[key] = (reasonCounts[key] || 0) + 1;
             }
-            console.log(`[BrowseLotsView] tier39 auto-analyze: queued ${r.queued}, skipped ${r.skipped}, errors ${r.errors}`, reasonCounts);
+            console.log(`[BrowseLotsView] auto-analyze: queued ${r.queued}, skipped ${r.skipped}, errors ${r.errors}`, reasonCounts);
           })
-          .catch((e) => console.warn('[BrowseLotsView] tier39 enqueue failed:', e?.message || e));
+          .catch((e) => console.warn('[BrowseLotsView] auto-analyze enqueue failed:', e?.message || e));
       } else {
-        console.log(`[BrowseLotsView] tier39 auto-analyze: 0 lots matched filter (source=liquidation.com, seller=Newegg_Business) out of ${freshLots.length} scraped`);
+        console.log(`[BrowseLotsView] auto-analyze: 0 of ${freshLots.length} lots passed AUTO_ANALYZE_FILTER`);
       }
       if (data.errors?.length) {
         setError(data.errors.map((e) => `${e.source}: ${e.error}`).join(' | '));

@@ -169,7 +169,7 @@ export default function Tier39Dashboard({ onAnalyzeLot }) {
       <EmptyState
         icon={TrendingUp}
         title="No auto-analyses yet"
-        description="The auto-analyze worker runs every 5 minutes. Once it scores a Newegg_Business lot, it'll show up here."
+        description="The auto-analyze worker runs every 5 minutes. Once it scores a lot, it'll show up here."
       />
     );
   }

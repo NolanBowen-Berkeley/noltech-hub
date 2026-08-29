@@ -56,7 +56,7 @@ export function classifyLiqCategory(title) {
   return 'other';
 }
 
-// ── Title MSRP parser (mirrors scraper/scrapers/liquidation.js parseMsrp) ─────
+// ── Title MSRP parser ────────────────────────────────────────────────────────
 // Pulls the "$18K" / "$28.5K" / "$1,200" retail figure out of the lot title.
 export function parseTitleMsrp(title) {
   if (!title) return null;

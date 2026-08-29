@@ -121,6 +121,28 @@ export const PIPELINE_TOKEN_KEY = 'noltech:settings:pipeline-token';
 export const LEGACY_CLOUD_SCRAPER_BASE_KEY  = 'noltech:settings:cloud-scraper-base';
 export const LEGACY_CLOUD_SCRAPER_TOKEN_KEY = 'noltech:settings:cloud-scraper-token';
 
+// ─── Auto-analyze filter ─────────────────────────────────────────────────────
+// Which freshly-fetched lots get enqueued for the background scoring cron.
+// Scoring costs a pricing lookup per manifest line, so this is a cost control,
+// not just a preference — an empty filter means "score everything".
+//
+// This used to be hardcoded to one marketplace and one seller account, which
+// silently matched nothing the moment the source list changed. Leave both
+// arrays empty to score every lot, or narrow to the sources/sellers you
+// actually bid on.
+export const AUTO_ANALYZE_FILTER = {
+  sources: [],   // e.g. ['sample'] — empty means any source
+  sellers: [],   // e.g. ['SomeSeller'] — empty means any seller
+};
+
+/** True when `lot` passes AUTO_ANALYZE_FILTER. Empty arrays match everything. */
+export function passesAutoAnalyzeFilter(lot, filter = AUTO_ANALYZE_FILTER) {
+  const { sources = [], sellers = [] } = filter || {};
+  if (sources.length && !sources.includes(lot?.source)) return false;
+  if (sellers.length && !sellers.includes(lot?.seller)) return false;
+  return true;
+}
+
 // ─── Business Defaults ───────────────────────────────────────────────────────
 // Your shop's identity. These feed listing copy, packing slips, and shipping
 // estimates, so set them before generating anything a buyer will see.
