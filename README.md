@@ -56,11 +56,6 @@ The Hub needs a Supabase project for auth and storage. Apply the migrations in
 
 **This build ships with generated sample data, not a live market feed.**
 
-The private version this was derived from got its lot listings and sold-price
-comparables by scraping auction sites through a bot-detection-evading proxy.
-That code isn't here — it violated those sites' terms of service, and it broke
-every time their markup changed, silently.
-
 What's here instead is a **provider interface**. Everything the pipeline knows
 about the outside world comes through one of two small contracts, and swapping
 the implementation is a config change:
