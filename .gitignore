@@ -1,0 +1,75 @@
+# ─── Secrets ─────────────────────────────────────────────────────────────────
+# Every .env is ignored, including per-package ones. Only .env.example files
+# are tracked, and those hold placeholders. If you ever need to commit a real
+# credential to make something work, that is a design bug — fix the design.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+credentials.json
+service-account*.json
+secrets.json
+
+# ─── Dependencies ────────────────────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ─── Build output ────────────────────────────────────────────────────────────
+# dist/ matters more than usual here: Vite inlines every VITE_* env var into
+# the bundle at build time, so a committed dist/ leaks whatever .env was
+# present when it was built.
+dist/
+dist-electron/
+build/
+out/
+release/
+*.asar
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.snap
+
+# ─── Runtime data ────────────────────────────────────────────────────────────
+# Disk-backed caches (KV + images) and anything the pipeline writes at runtime.
+.data/
+*.sqlite
+*.sqlite3
+*.db
+
+# ─── Business data ───────────────────────────────────────────────────────────
+# Real inventory, orders, manifests, and bookkeeping exports. Sample fixtures
+# live in code (noltech-pipeline/src/providers/fixtures.js), not in files here.
+*.csv
+!**/sample-*.csv
+!**/example-*.csv
+manifests/
+exports/
+backups/
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── Editor / OS ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# ─── Local agent config ──────────────────────────────────────────────────────
+.claude/settings.local.json

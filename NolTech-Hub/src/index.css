@@ -1,0 +1,774 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NolTech Design Tokens — Glossy Aesthetic (Stripe/Supabase inspired)
+   Light + Dark parity. Every token has both variants.
+   Use semantic names in app code (bg-surface, text-fg, border-border, etc.)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* color-scheme tells the browser to render native form controls (date
+     pickers, scrollbars, dropdowns) with the right palette. Light by
+     default; the .dark selector below switches it. */
+  color-scheme: light;
+
+  /* ─── Surfaces (near-white with a faint cool cast — never pure white) ──── */
+  --bg:              #FAFBFD;             /* page background per design spec */
+  --surface:         #FFFFFF;             /* cards, panels */
+  --elevated:        #FFFFFF;             /* modals, popovers */
+  --recessed:        #F4F6FA;             /* inputs, code blocks, secondary panels */
+  --muted:           #F1F3F8;             /* subtle fills, filter pills, hover */
+  --subtle:          #F8FAFC;             /* zebra rows, very subtle differentiation */
+
+  /* ─── Borders (low-contrast — borders should whisper, not shout) ───────── */
+  --border:          rgba(15, 23, 42, 0.08);
+  --border-strong:   rgba(15, 23, 42, 0.16);
+  --border-subtle:   rgba(15, 23, 42, 0.04);
+  --border-active:   rgba(99, 102, 241, 0.40);  /* focus + active brand */
+
+  /* ─── Text (warmth toward brand, never pure gray) ───────────────────────── */
+  --fg:              #0A0F1C;             /* near-black, slightly cool */
+  --fg-muted:        #5B6373;             /* secondary, body subdued */
+  --fg-subtle:       #8A93A4;             /* tertiary, captions */
+  --fg-onAccent:     #FFFFFF;
+
+  /* ─── Accent (vivid indigo — the only brand color) ──────────────────────── */
+  --accent:          #4F46E5;             /* indigo-600 */
+  --accent-hover:    #4338CA;             /* indigo-700 */
+  --accent-subtle:   #EEF0FF;             /* indigo-50 tint */
+  --accent-fg:       #FFFFFF;
+  --accent-ring:     rgb(99 102 241 / 0.35);
+
+  /* ─── Intent colors ─────────────────────────────────────────────────────── */
+  --success:         #059669;             /* emerald-600 */
+  --success-subtle:  #ECFDF5;
+  --success-fg:      #065F46;
+
+  --danger:          #DC2626;             /* red-600 */
+  --danger-subtle:   #FEF2F2;
+  --danger-fg:       #991B1B;
+
+  --warning:         #D97706;             /* amber-600 */
+  --warning-subtle:  #FFFBEB;
+  --warning-fg:      #92400E;
+
+  --info:            #0891B2;             /* cyan-600 */
+  --info-subtle:     #ECFEFF;
+  --info-fg:         #155E75;
+
+  /* ─── Gradients (glossy) ────────────────────────────────────────────────── */
+  --surface-gradient:  linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 100%);
+  --elevated-gradient: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  --accent-gradient:   linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  --success-gradient:  linear-gradient(135deg, #10B981 0%, #059669 100%);
+  --danger-gradient:   linear-gradient(135deg, #F87171 0%, #DC2626 100%);
+  --hero-gradient:     radial-gradient(ellipse at top, rgb(99 102 241 / 0.08) 0%, transparent 60%);
+
+  /* ─── Brand gradient (the signature visual — Layered Precision) ───────────
+     Five-stop spectrum: indigo → magenta → pink → warm orange → teal.
+     Apply via .gradient-text for headline accents, .brand-stroke for 1-2px
+     borders, .hero-mesh for blurred background washes. Angle is 120deg by
+     default; override with --brand-angle inline when needed. */
+  --brand-angle:       120deg;
+  --brand-gradient:    linear-gradient(var(--brand-angle),
+                         #7B61FF 0%,
+                         #C04FE6 28%,
+                         #FF6B9D 52%,
+                         #FFA552 76%,
+                         #4FD1C5 100%);
+  --brand-gradient-soft: linear-gradient(var(--brand-angle),
+                         rgba(123, 97, 255, 0.55) 0%,
+                         rgba(192, 79, 230, 0.50) 28%,
+                         rgba(255, 107, 157, 0.45) 52%,
+                         rgba(255, 165, 82,  0.45) 76%,
+                         rgba(79, 209, 197, 0.50) 100%);
+
+  /* ─── Legacy aliases (preserve for migration) ───────────────────────────── */
+  --nolbg:           var(--bg);
+  --textprimary:     var(--fg);
+  --textsecondary:   var(--fg-muted);
+  --ll-border:       var(--border);
+  --ll-faint:        var(--fg-subtle);
+  --input-bg:        var(--surface);
+  --input-border:    var(--border);
+  --card-border:     var(--border);
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* ─── Surfaces (rich blue-black, layered for depth) ─────────────────────── */
+  --bg:              #0A0E1A;             /* deepest, near-black with blue tint per spec */
+  --surface:         #111726;             /* cards */
+  --elevated:        #141B2D;             /* modals, popovers (one level up) */
+  --recessed:        #070A14;             /* inputs, code blocks, secondary panels */
+  --muted:           #181F33;
+  --subtle:          #0E1320;
+
+  /* ─── Borders (low-contrast — borders should whisper) ──────────────────── */
+  --border:          rgba(255, 255, 255, 0.08);
+  --border-strong:   rgba(255, 255, 255, 0.16);
+  --border-subtle:   rgba(255, 255, 255, 0.04);
+  --border-active:   rgba(129, 140, 248, 0.50);
+
+  /* ─── Text ──────────────────────────────────────────────────────────────── */
+  --fg:              #F4F5F9;
+  --fg-muted:        #A1A8BC;
+  --fg-subtle:       #6B7389;
+  --fg-onAccent:     #FFFFFF;
+
+  /* ─── Accent (brighter in dark for contrast) ────────────────────────────── */
+  --accent:          #6366F1;             /* indigo-500 */
+  --accent-hover:    #818CF8;             /* indigo-400 */
+  --accent-subtle:   rgb(99 102 241 / 0.14);
+  --accent-fg:       #FFFFFF;
+  --accent-ring:     rgb(129 140 248 / 0.5);
+
+  /* ─── Intent colors (brighter in dark) ──────────────────────────────────── */
+  --success:         #10B981;
+  --success-subtle:  rgb(16 185 129 / 0.14);
+  --success-fg:      #6EE7B7;
+
+  --danger:          #F87171;
+  --danger-subtle:   rgb(248 113 113 / 0.14);
+  --danger-fg:       #FCA5A5;
+
+  --warning:         #FBBF24;
+  --warning-subtle:  rgb(251 191 36 / 0.14);
+  --warning-fg:      #FCD34D;
+
+  --info:            #22D3EE;
+  --info-subtle:     rgb(34 211 238 / 0.14);
+  --info-fg:         #67E8F9;
+
+  /* ─── Gradients (deeper, more luminous in dark) ─────────────────────────── */
+  --surface-gradient:  linear-gradient(180deg, #141B2D 0%, #111726 100%);
+  --elevated-gradient: linear-gradient(180deg, #171F33 0%, #131A2A 100%);
+  --accent-gradient:   linear-gradient(135deg, #818CF8 0%, #6366F1 100%);
+  --success-gradient:  linear-gradient(135deg, #34D399 0%, #10B981 100%);
+  --danger-gradient:   linear-gradient(135deg, #FCA5A5 0%, #F87171 100%);
+  --hero-gradient:     radial-gradient(ellipse at top, rgb(99 102 241 / 0.18) 0%, transparent 60%);
+
+  /* ─── Brand gradient — same spectrum, slightly brighter for dark ──────── */
+  --brand-gradient:    linear-gradient(var(--brand-angle),
+                         #8B73FF 0%,
+                         #CB5FF0 28%,
+                         #FF7DAA 52%,
+                         #FFB066 76%,
+                         #5FE0D4 100%);
+  --brand-gradient-soft: linear-gradient(var(--brand-angle),
+                         rgba(139, 115, 255, 0.45) 0%,
+                         rgba(203, 95,  240, 0.40) 28%,
+                         rgba(255, 125, 170, 0.35) 52%,
+                         rgba(255, 176, 102, 0.35) 76%,
+                         rgba(95,  224, 212, 0.40) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Base styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--fg);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';  /* Inter stylistic alts */
+    font-optical-sizing: auto;
+    caret-color: var(--accent);
+  }
+
+  /* Tabular numbers everywhere by default for money/stats consistency */
+  .font-mono, [class*='font-mono'], .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' on, 'lnum' on, 'zero' on, 'ss01' on;
+  }
+
+  /* Headings — tight tracking, uses Inter Variable at heavier weights */
+  h1, h2, h3, h4 {
+    font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.022em;
+    font-feature-settings: 'cv11', 'ss01', 'cv02';
+  }
+  h1 { letter-spacing: -0.032em; }
+  h2 { letter-spacing: -0.024em; }
+
+  /* Small text gets crisper at low sizes via optical sizing */
+  .text-xs, .text-\[10px\], .text-\[11px\] {
+    font-optical-sizing: auto;
+  }
+
+  /* Hero numbers class — use for the primary KPI value */
+  .hero-num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' on, 'lnum' on, 'zero' on, 'ss01' on;
+    letter-spacing: -0.028em;
+    font-weight: 600;
+  }
+
+  /* Numeric text upgrades font-weight subtly on hover for interactive numbers */
+  .num-weight-hover { transition: font-weight 180ms ease-out; }
+  .num-weight-hover:hover { font-weight: 600; }
+
+  /* Focus rings — unified */
+  :focus-visible {
+    outline: 2px solid var(--accent-ring);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* Selection — tinted accent, not browser default blue */
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 28%, transparent);
+    color: var(--fg);
+    text-shadow: none;
+  }
+
+  /* Images don't get tinted by selection */
+  img::selection, video::selection, svg::selection {
+    background: transparent;
+  }
+
+  /* Disabled state — muted + desaturated, not just opacity */
+  [disabled], [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+  :disabled:not([data-keep-color]) {
+    filter: saturate(0.6);
+  }
+
+  /* Native input cleanup */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  input[type='number'] { -moz-appearance: textfield; }
+
+  input[type='date'] {
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.875rem;
+    color: var(--fg);
+    cursor: text;
+  }
+  input[type='date']::-webkit-calendar-picker-indicator {
+    opacity: 0.5;
+    cursor: pointer;
+    filter: invert(30%) sepia(10%) saturate(500%) hue-rotate(180deg);
+    scale: 0.9;
+  }
+  .dark input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(80%) sepia(10%) saturate(200%) hue-rotate(180deg);
+    opacity: 0.7;
+  }
+  input[type='date']::-webkit-datetime-edit-fields-wrapper { padding: 0; }
+  input[type='date']::-webkit-datetime-edit { padding: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Component utilities — glossy primitives
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Glossy card — subtle gradient + inner highlight */
+  .glossy-card {
+    background: var(--surface-gradient);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 rgb(15 23 42 / 0.05), 0 4px 12px -2px rgb(15 23 42 / 0.08);
+    position: relative;
+  }
+  .dark .glossy-card {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 8px 24px -4px rgb(0 0 0 / 0.4);
+  }
+  .dark .glossy-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.04);
+    pointer-events: none;
+  }
+
+  /* Glossy elevated (modals/popovers) */
+  .glossy-elevated {
+    background: var(--elevated-gradient);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: 0 8px 16px -4px rgb(15 23 42 / 0.1), 0 24px 64px -12px rgb(15 23 42 / 0.18);
+  }
+  .dark .glossy-elevated {
+    box-shadow: 0 8px 16px -4px rgb(0 0 0 / 0.5), 0 24px 64px -12px rgb(0 0 0 / 0.5);
+  }
+
+  /* Accent button — gradient + glow */
+  .btn-accent {
+    background: var(--accent-gradient);
+    color: var(--accent-fg);
+    border: 1px solid transparent;
+    box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.08),
+                0 4px 16px -2px rgb(99 102 241 / 0.35),
+                inset 0 1px 0 0 rgb(255 255 255 / 0.2);
+    transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-accent:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px 0 rgb(15 23 42 / 0.1),
+                0 8px 24px -2px rgb(99 102 241 / 0.5),
+                inset 0 1px 0 0 rgb(255 255 255 / 0.25);
+  }
+  .btn-accent:active { transform: translateY(0); }
+
+  /* Hero gradient — radial glow for dashboards */
+  .hero-bg {
+    background: var(--hero-gradient);
+  }
+
+  /* Shimmer for skeletons */
+  .shimmer {
+    background: linear-gradient(90deg, var(--muted) 0%, var(--subtle) 50%, var(--muted) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s linear infinite;
+  }
+
+  /* ─── Tactile hover states ──────────────────────────────────────────────
+     Orchestrated hover: background + shadow + slight lift + edge accent.
+     Apply with class `.row-hover` on table rows, `.card-hover` on cards. */
+
+  .row-hover {
+    position: relative;
+    transition: background-color 140ms ease-out-expo;
+    cursor: pointer;
+  }
+  .row-hover::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transform: scaleY(0.6);
+    transition: opacity 160ms ease-out-expo, transform 160ms ease-out-expo;
+    pointer-events: none;
+  }
+  .row-hover:hover {
+    background-color: color-mix(in srgb, var(--muted) 60%, transparent);
+  }
+  /* Dark mode needs a stronger hover signal — the default 60% mix on the
+     already-dark muted token blends into the surface. Use a brighter
+     accent-tinted hover instead. */
+  .dark .row-hover:hover {
+    background-color: color-mix(in srgb, var(--accent) 8%, var(--muted));
+  }
+  .row-hover:hover::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  /* Card hover: lift, shadow deepen, subtle accent ring */
+  .card-hover {
+    transition:
+      transform 220ms ease-out-expo,
+      box-shadow 220ms ease-out-expo,
+      border-color 220ms ease-out-expo;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px -2px rgb(15 23 42 / 0.08), 0 16px 40px -8px rgb(15 23 42 / 0.14);
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  }
+  .dark .card-hover:hover {
+    box-shadow: 0 4px 8px -2px rgb(0 0 0 / 0.5), 0 16px 40px -8px rgb(0 0 0 / 0.6);
+  }
+
+  /* Animated link underline — draws left-to-right on hover */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 220ms ease-out-expo;
+    padding-bottom: 1px;
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Cell-level value flash (supports data-flash attribute pattern) */
+  [data-flash="true"] {
+    animation: flash-value 800ms ease-out-expo;
+  }
+  @keyframes flash-value {
+    0%   { background-color: color-mix(in srgb, var(--warning) 28%, transparent); }
+    100% { background-color: transparent; }
+  }
+
+  /* Monospace utility (legacy alias) */
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Brand gradient primitives — Layered Precision design system
+     Use sparingly: 1-2 hero gradients per page, 1-2 gradient text accents.
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  /* Gradient text — apply to a single headline word/phrase per view */
+  .gradient-text {
+    background-image: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    /* Subtle motion: shift the gradient slowly so it doesn't feel static */
+    background-size: 200% auto;
+    background-position: 0% 50%;
+  }
+
+  /* Hero mesh — heavily-blurred brand gradient as page background wash.
+     Place as an absolutely-positioned ::before/::after on a hero container.
+     Pair with `mix-blend-mode: screen` in dark, `multiply` in light. */
+  .hero-mesh {
+    position: absolute;
+    inset: -10% -10% auto -10%;
+    height: 60%;
+    background: var(--brand-gradient-soft);
+    filter: blur(80px) saturate(1.1);
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .dark .hero-mesh {
+    opacity: 0.45;
+    mix-blend-mode: screen;
+    filter: blur(90px) saturate(1.2);
+  }
+
+  /* 1-2px brand-gradient border via masked background.
+     Apply to featured cards / CTAs that need the signature accent. */
+  .brand-stroke {
+    position: relative;
+    background: var(--surface);
+    background-clip: padding-box;
+    border: 1px solid transparent;
+  }
+  .brand-stroke::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--brand-gradient);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* 2px brand-gradient top accent for "featured" cards */
+  .brand-accent-top {
+    position: relative;
+  }
+  .brand-accent-top::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--brand-gradient);
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     Typography utilities — modular 1.25 scale w/ tracking that tightens
+     as size grows. Tailwind's text-* defaults don't carry tracking, so
+     these utilities add it. Use them on h1/h2/h3 in module headers.
+     ═══════════════════════════════════════════════════════════════════════ */
+  .h-display-xl  { font-size: 4.5rem; line-height: 1.05; letter-spacing: -0.030em; font-weight: 700; }
+  .h-display-lg  { font-size: 3.5rem; line-height: 1.07; letter-spacing: -0.025em; font-weight: 700; }
+  .h-display-md  { font-size: 2.5rem; line-height: 1.10; letter-spacing: -0.022em; font-weight: 700; }
+  .h-display-sm  { font-size: 1.875rem; line-height: 1.20; letter-spacing: -0.021em; font-weight: 600; }
+  .h-page-title  { font-size: 1.5rem;  line-height: 1.30; letter-spacing: -0.019em; font-weight: 600; }
+  .h-section     { font-size: 1.125rem; line-height: 1.44; letter-spacing: -0.014em; font-weight: 600; }
+  .ui-eyebrow    { font-size: 0.6875rem; line-height: 1.4; letter-spacing: 0.10em;  font-weight: 500; text-transform: uppercase; color: var(--fg-muted); }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     App-shell chrome — Topbar (48px) + content padding orchestration.
+     The CSS var --sidebar-w is set by Sidebar.jsx; Topbar respects it.
+     ═══════════════════════════════════════════════════════════════════════ */
+  .app-topbar {
+    height: 48px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+            backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Module header standard padding scheme (used by ModuleHeader component) */
+  .module-header {
+    padding-top: 2rem;     /* 32 */
+    padding-bottom: 1.5rem;/* 24 */
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Filter bar 56px, slightly recessed */
+  .filter-bar {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 0.25rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Legacy compatibility layer — remaps hardcoded classes during migration.
+   TODO: Remove these overrides after Phase 1 color sweep is complete.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Toast slide-in */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+.animate-slide-in { animation: slide-in-right 0.25s ease-out; }
+
+/* ─── Reduced motion support ─────────────────────────────────────────────── */
+/* Applied when user has prefers-reduced-motion: reduce.
+   Disables decorative animation while keeping layout changes instant. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* bg-white → theme-aware surface */
+.dark .bg-white          { background-color: var(--surface) !important; }
+
+/* slate backgrounds → themed muted/surface */
+.dark .bg-slate-50       { background-color: var(--subtle) !important; }
+.dark .bg-slate-100      { background-color: var(--muted) !important; }
+.dark .bg-slate-200      { background-color: var(--muted) !important; }
+
+/* slate borders */
+.dark .border-slate-100  { border-color: var(--border) !important; }
+.dark .border-slate-200  { border-color: var(--border) !important; }
+.dark .border-slate-300  { border-color: var(--border-strong) !important; }
+
+/* red borders for error states */
+.dark .border-red-200    { border-color: rgb(248 113 113 / 0.35) !important; }
+.dark .border-red-300    { border-color: rgb(248 113 113 / 0.45) !important; }
+
+/* ─── Colored intent backgrounds (50/100 tints used as status surfaces) ──── */
+/* Greens / emeralds → success-subtle */
+.dark .bg-green-50,
+.dark .bg-green-100,
+.dark .bg-emerald-50,
+.dark .bg-emerald-100   { background-color: var(--success-subtle) !important; }
+
+/* Reds → danger-subtle */
+.dark .bg-red-50,
+.dark .bg-red-100       { background-color: var(--danger-subtle) !important; }
+
+/* Ambers / yellows / oranges → warning-subtle */
+.dark .bg-amber-50,
+.dark .bg-amber-100,
+.dark .bg-yellow-50,
+.dark .bg-yellow-100,
+.dark .bg-orange-50,
+.dark .bg-orange-100    { background-color: var(--warning-subtle) !important; }
+
+/* Blues / skies / cyans → info-subtle */
+.dark .bg-blue-50,
+.dark .bg-blue-100,
+.dark .bg-sky-50,
+.dark .bg-sky-100,
+.dark .bg-cyan-50,
+.dark .bg-cyan-100,
+.dark .bg-info-subtle   { background-color: var(--info-subtle) !important; }
+
+/* Indigos / violets / purples → accent-subtle */
+.dark .bg-indigo-50,
+.dark .bg-indigo-100,
+.dark .bg-violet-50,
+.dark .bg-violet-100,
+.dark .bg-purple-50,
+.dark .bg-purple-100    { background-color: var(--accent-subtle) !important; }
+
+/* ─── Colored intent text (600/700 used as success/warning/info labels) ──── */
+.dark .text-green-600,
+.dark .text-green-700,
+.dark .text-emerald-600,
+.dark .text-emerald-700 { color: var(--success) !important; }
+
+.dark .text-red-600,
+.dark .text-red-700,
+.dark .text-rose-600,
+.dark .text-rose-700    { color: var(--danger) !important; }
+
+.dark .text-amber-600,
+.dark .text-amber-700,
+.dark .text-yellow-600,
+.dark .text-yellow-700,
+.dark .text-orange-600,
+.dark .text-orange-700  { color: var(--warning) !important; }
+
+.dark .text-blue-600,
+.dark .text-blue-700,
+.dark .text-sky-600,
+.dark .text-sky-700,
+.dark .text-cyan-600,
+.dark .text-cyan-700    { color: var(--info) !important; }
+
+.dark .text-indigo-600,
+.dark .text-indigo-700,
+.dark .text-violet-600,
+.dark .text-violet-700,
+.dark .text-purple-600,
+.dark .text-purple-700  { color: var(--accent) !important; }
+
+/* ─── Colored intent borders (200/300) ──────────────────────────────────── */
+.dark .border-green-200,
+.dark .border-green-300,
+.dark .border-emerald-200,
+.dark .border-emerald-300 { border-color: color-mix(in srgb, var(--success) 35%, var(--border)) !important; }
+
+.dark .border-amber-200,
+.dark .border-amber-300,
+.dark .border-yellow-200,
+.dark .border-yellow-300 { border-color: color-mix(in srgb, var(--warning) 35%, var(--border)) !important; }
+
+.dark .border-blue-200,
+.dark .border-blue-300,
+.dark .border-sky-200,
+.dark .border-sky-300,
+.dark .border-cyan-200,
+.dark .border-cyan-300   { border-color: color-mix(in srgb, var(--info) 35%, var(--border)) !important; }
+
+.dark .border-indigo-200,
+.dark .border-indigo-300,
+.dark .border-violet-200,
+.dark .border-violet-300,
+.dark .border-purple-200,
+.dark .border-purple-300 { border-color: color-mix(in srgb, var(--accent) 35%, var(--border)) !important; }
+
+/* ─── Hover variants for colored backgrounds ───────────────────────────── */
+.dark .hover\:bg-green-50:hover,
+.dark .hover\:bg-emerald-50:hover    { background-color: color-mix(in srgb, var(--success) 14%, transparent) !important; }
+.dark .hover\:bg-red-50:hover        { background-color: color-mix(in srgb, var(--danger) 14%, transparent) !important; }
+.dark .hover\:bg-amber-50:hover,
+.dark .hover\:bg-amber-100:hover,
+.dark .hover\:bg-yellow-50:hover     { background-color: color-mix(in srgb, var(--warning) 14%, transparent) !important; }
+.dark .hover\:bg-blue-50:hover,
+.dark .hover\:bg-sky-50:hover        { background-color: color-mix(in srgb, var(--info) 14%, transparent) !important; }
+.dark .hover\:bg-indigo-50:hover,
+.dark .hover\:bg-violet-50:hover,
+.dark .hover\:bg-purple-50:hover     { background-color: color-mix(in srgb, var(--accent) 14%, transparent) !important; }
+
+/* Hover text too */
+.dark .hover\:text-amber-700:hover,
+.dark .hover\:text-amber-800:hover   { color: var(--warning) !important; }
+.dark .hover\:text-green-700:hover   { color: var(--success) !important; }
+.dark .hover\:text-red-700:hover,
+.dark .hover\:text-danger:hover      { color: var(--danger) !important; }
+.dark .hover\:text-blue-700:hover    { color: var(--info) !important; }
+
+/* Hover borders */
+.dark .hover\:border-amber-200:hover,
+.dark .hover\:border-amber-300:hover { border-color: color-mix(in srgb, var(--warning) 50%, var(--border)) !important; }
+.dark .hover\:border-red-200:hover   { border-color: color-mix(in srgb, var(--danger) 50%, var(--border)) !important; }
+
+/* ─── Solid medium tones occasionally used for contrast labels (500/600) ── */
+.dark .bg-blue-600       { background-color: var(--info) !important; }
+.dark .bg-green-600,
+.dark .bg-emerald-600    { background-color: var(--success) !important; }
+.dark .bg-red-600        { background-color: var(--danger) !important; }
+.dark .bg-amber-600,
+.dark .bg-yellow-600     { background-color: var(--warning) !important; }
+.dark .bg-indigo-600,
+.dark .bg-violet-600,
+.dark .bg-purple-600     { background-color: var(--accent) !important; }
+
+/* Gray text variants — rarely used but show up in some legacy spots */
+.dark .text-gray-400     { color: var(--fg-subtle) !important; }
+.dark .text-gray-500,
+.dark .text-gray-600     { color: var(--fg-muted) !important; }
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900     { color: var(--fg) !important; }
+
+.dark .bg-gray-50,
+.dark .bg-gray-100       { background-color: var(--muted) !important; }
+.dark .bg-gray-200       { background-color: var(--muted) !important; }
+
+/* slate text */
+.dark .text-slate-400    { color: var(--fg-subtle) !important; }
+.dark .text-slate-500    { color: var(--fg-muted) !important; }
+.dark .text-slate-600    { color: var(--fg-muted) !important; }
+.dark .text-slate-700    { color: var(--fg) !important; }
+.dark .text-slate-800    { color: var(--fg) !important; }
+.dark .text-slate-900    { color: var(--fg) !important; }
+
+/* Inputs, textareas, selects */
+.dark input:not([type='range']):not([type='checkbox']):not([type='radio']),
+.dark textarea,
+.dark select {
+  background-color: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--fg) !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--fg-subtle) !important;
+}
+
+/* Focus rings — brighter indigo in dark */
+.dark .focus\:ring-secondary\/30:focus,
+.dark .focus\:ring-primary\/30:focus { --tw-ring-color: var(--accent-ring) !important; }
+.dark .focus\:border-secondary:focus,
+.dark .focus\:border-primary:focus   { border-color: var(--accent) !important; }
+
+/* Table zebra */
+.dark .even\:bg-slate-50:nth-child(even) { background-color: var(--subtle) !important; }
+.dark .odd\:bg-slate-50:nth-child(odd)   { background-color: var(--subtle) !important; }
+
+/* Hover states */
+.dark .hover\:bg-slate-50:hover  { background-color: var(--muted) !important; }
+.dark .hover\:bg-slate-100:hover { background-color: var(--muted) !important; }
+.dark .hover\:bg-gray-50:hover   { background-color: var(--muted) !important; }
+.dark .hover\:bg-white:hover     { background-color: var(--surface) !important; }
+
+/* Divide colors */
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: var(--border) !important; }
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: var(--border) !important; }
+
+/* Ring colors */
+.dark .ring-slate-200 { --tw-ring-color: var(--border) !important; }
+
+/* Shadows — subtler in dark */
+.dark .shadow-sm   { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.5) !important; }
+.dark .shadow-card { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 4px 12px -2px rgb(0 0 0 / 0.4) !important; }
+.dark .shadow-glow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 4px 12px -2px rgb(0 0 0 / 0.4) !important; }
+.dark .shadow-glow-md { box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.5), 0 8px 20px -4px rgb(0 0 0 / 0.5) !important; }
+.dark .shadow-glow-lg { box-shadow: 0 4px 8px 0 rgb(0 0 0 / 0.5), 0 16px 40px -8px rgb(0 0 0 / 0.6) !important; }
+
+/* Scrollbars */
+::-webkit-scrollbar       { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+.dark ::-webkit-scrollbar-track { background: transparent; }
+.dark ::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--bg); }
+.dark ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }

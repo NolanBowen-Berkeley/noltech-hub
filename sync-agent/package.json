@@ -1,0 +1,24 @@
+{
+  "name": "noltech-sync-agent",
+  "version": "0.1.0",
+  "description": "Headless Node.js sync agent for the NolTech Hub. Runs on a Raspberry Pi (or any always-on box) and mirrors eBay listings, orders, and finances into Supabase on a schedule. Replaces the per-device Electron sync loop so the desktop app no longer has to be running.",
+  "type": "module",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5",
+    "node-cron": "^3.0.3",
+    "pino": "^9.4.0",
+    "pino-pretty": "^11.2.2",
+    "pino-roll": "^2.0.0"
+  },
+  "license": "MIT"
+}

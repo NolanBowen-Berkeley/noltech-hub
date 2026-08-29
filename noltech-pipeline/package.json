@@ -1,0 +1,25 @@
+{
+  "name": "noltech-pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local Node service backing NolTech Hub \u2014 lot discovery, manifest parsing, sold-comps pricing, scoring, bid alerts, and eBay sync. Data sources are pluggable providers; see docs/DATA-SOURCES.md.",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "serve-only": "node src/server.js --no-crons",
+    "run-once": "node src/server.js --run-once",
+    "health": "node -e \"fetch('http://127.0.0.1:'+(process.env.PIPELINE_PORT||3001)+'/health').then(r=>r.json()).then(j=>console.log(JSON.stringify(j,null,2))).catch(e=>{console.error('unreachable:',e.message);process.exit(1)})\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5",
+    "fast-xml-parser": "^4.4.1",
+    "node-cron": "^3.0.3"
+  },
+  "license": "MIT"
+}
